@@ -175,5 +175,52 @@ message.channel.send({ embeds: [embed] });
 
 
 
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(!message.content.startsWith('cfContest')) return;
+
+// take contest id and find number of problem solved and standings in the contest
+const contestID=message.content.split(' ')[1];
+
+
+const priyanshuContestData=await fetch('https://codeforces.com/api/user.rating?handle=priyanshu619').then(response => response.json());
+// console.log(priyanshuContestData);
+const priyanshuContestRank=priyanshuContestData.result;
+var priyanshuRank;
+
+var f=0;
+priyanshuContestRank.forEach(cur=>{
+  if(parseInt(contestID)===parseInt(cur.contestId))
+  {
+    priyanshuRank=cur.rank;
+    f=1;
+    // break; 
+  }
+})
+console.log(f);
+if(f===0) priyanshuRank="NOT GIVEN";
+
+console.log(priyanshuRank)
+
+
+const embed = new Discord.MessageEmbed().setTitle(`CF Rank In Contest ${contestID}`).setColor(0x3498DB)
+embed.addField("Priyanshu", `[${priyanshuRank}](https://codeforces.com/profile/priyanshu619)`,true)
+// .addField("Aditya",`[${temp1}](https://codeforces.com/profile/apcc_25)`,true)
+
+// embed.addField("Unnati", `[${temp2}](https://codeforces.com/profile/unnati19)`,true).addField("Sanjeev", `[${temp3}](https://codeforces.com/profile/krsanjeev196)`,true).addField("Ambuj", `[${temp4}](https://codeforces.com/profile/ambuj6009)`,true).addField("Rudra", `[${temp5}](https://codeforces.com/profile/rudra2901)`,true)
+
+message.channel.send({ embeds: [embed] });
+});
+
+
+
+
+
+
+
+
 // keepAlive();
 client.login(token);
