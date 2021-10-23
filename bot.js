@@ -1,7 +1,7 @@
 import { Client, Intents , MessageEmbed}  from 'discord.js';
 import Discord from 'discord.js'
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-import keepAlive from './server.js'
+// import keepAlive from './server.js'
 import fetch from "node-fetch";
 const token = process.env['token'];
 import terminalLink from 'terminal-link';
@@ -84,11 +84,6 @@ client.on('ready', () => {
 });
 
 
-
-
-
-
-
 client.on('messageCreate',async message=>{
 if(message.author.bot) return;
 // console.log(message);
@@ -116,5 +111,59 @@ message.channel.send({ embeds: [embed] });
 
 });
 
-keepAlive();
+
+
+
+
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(message.content!='cfrating') return;
+
+const priyanshuUserData=await fetch('https://codeforces.com/api/user.info?handles=priyanshu619').then(response => response.json());
+const priyanshuRating=priyanshuUserData.result[0].rating;
+console.log(priyanshuRating);
+
+
+
+const embed = new Discord.MessageEmbed().setTitle('CF Rating').setColor(0x3498DB)
+embed.addField("Priyanshu", `[${priyanshuRating}](https://codeforces.com/profile/priyanshu619)`,true)
+// .addField("Aditya",`[${temp1}](https://codeforces.com/profile/apcc_25)`,true)
+
+// embed.addField("Unnati", `[${temp2}](https://codeforces.com/profile/unnati19)`,true).addField("Sanjeev", `[${temp3}](https://codeforces.com/profile/krsanjeev196)`,true).addField("Ambuj", `[${temp4}](https://codeforces.com/profile/ambuj6009)`,true).addField("Rudra", `[${temp5}](https://codeforces.com/profile/rudra2901)`,true)
+
+message.channel.send({ embeds: [embed] });
+
+});
+
+
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(message.content!='cfrating') return;
+
+const priyanshuUserData=await fetch('https://codeforces.com/api/user.info?handles=priyanshu619').then(response => response.json());
+const priyanshuRating=priyanshuUserData.result[0].rating;
+console.log(priyanshuRating);
+
+
+
+const embed = new Discord.MessageEmbed().setTitle('CF Rating').setColor(0x3498DB)
+embed.addField("Priyanshu", `[${priyanshuRating}](https://codeforces.com/profile/priyanshu619)`,true)
+// .addField("Aditya",`[${temp1}](https://codeforces.com/profile/apcc_25)`,true)
+
+// embed.addField("Unnati", `[${temp2}](https://codeforces.com/profile/unnati19)`,true).addField("Sanjeev", `[${temp3}](https://codeforces.com/profile/krsanjeev196)`,true).addField("Ambuj", `[${temp4}](https://codeforces.com/profile/ambuj6009)`,true).addField("Rudra", `[${temp5}](https://codeforces.com/profile/rudra2901)`,true)
+
+message.channel.send({ embeds: [embed] });
+
+});
+
+
+
+
+// keepAlive();
 client.login(token);
