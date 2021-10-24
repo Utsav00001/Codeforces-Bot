@@ -20,6 +20,8 @@
     "express": "^4.17.1",
     "fetch": "^1.1.0",
     "node-fetch": "^2.6.5",
+    "quickchart": "^1.1.4",
+    "quickchart-js": "^1.4.2",
     "terminal-link": "^3.0.0"
   },
   "description": ""
