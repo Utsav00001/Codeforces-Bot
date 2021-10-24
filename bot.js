@@ -236,6 +236,44 @@ client.on('messageCreate',async message=>{
 if(message.author.bot) return;
 // console.log(message);
 
+if(!message.content.startsWith('problemsData')) return;
+// https://codeforces.com/api/user.status?handle=priyanshu619
+// number of a,b,c,d,e,f solved in graph form
+const handle=message.content.split(' ')[1];
+
+const priyanshuData=await fetch(`https://codeforces.com/api/user.status?handle=${handle}`).then(response => response.json());
+const priyanshuQuestions=priyanshuData.result;
+var a=0;
+var b=0;
+var c=0;
+var d=0;
+var e=0;
+priyanshuQuestions.forEach(cur=>{
+if(cur.problem.index==='A' && cur.verdict==='OK') a++;
+else if(cur.problem.index==='B' && cur.verdict==='OK') b++;
+else if(cur.problem.index==='C' && cur.verdict==='OK') c++;
+else if(cur.problem.index==='D' && cur.verdict==='OK') d++;
+else if(cur.problem.index==='E' && cur.verdict==='OK')e++; 
+})
+console.log(a,b,c,d,e);
+console.log(a+b+c+d+e)
+
+const chart = new QuickChart();
+chart.setConfig({
+  type: 'bar',
+  data: { labels: ['E', 'D','C','B','A'], datasets: [{ label: 'Foo', data: [e,d,c,b,a] }] },
+});
+const url = await chart.getShortUrl();
+message.channel.send(`Here's the chart you requested: ${url}`);
+
+});
+
+
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
 if(message.content!='solvedDataPriyanshu') return;
 // https://codeforces.com/api/user.status?handle=priyanshu619
 // number of a,b,c,d,e,f solved in graph form
