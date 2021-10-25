@@ -1,7 +1,7 @@
 import { Client, Intents , MessageEmbed}  from 'discord.js';
 import Discord from 'discord.js'
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-// import keepAlive from './server.js'
+import keepAlive from './server.js'
 import fetch from "node-fetch";
 const token = process.env['token'];
 import terminalLink from 'terminal-link';
@@ -270,6 +270,59 @@ message.channel.send(`Here's the chart you requested: ${url}`);
 
 
 
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(!message.content.startsWith('problemsRating')) return;
+// https://codeforces.com/api/user.status?handle=priyanshu619
+// number of a,b,c,d,e,f solved in graph form
+const handle=message.content.split(' ')[1];
+
+const priyanshuData=await fetch(`https://codeforces.com/api/user.status?handle=${handle}`).then(response => response.json());
+const priyanshuQuestions=priyanshuData.result;
+var a800=0;
+var a900=0;
+var a1000=0;
+var a1100=0;
+var a1200=0;
+var a1300=0;
+var a1400=0;
+var a1500=0;
+var a1600=0;
+var a1700=0;
+priyanshuQuestions.forEach(cur=>{
+if(cur.problem.rating===800 && cur.verdict==='OK') a800++;
+else if(cur.problem.rating===900 && cur.verdict==='OK') a900++;
+else if(cur.problem.rating===1000 && cur.verdict==='OK') a1000++;
+else if(cur.problem.rating===1100 && cur.verdict==='OK') a1100++;
+else if(cur.problem.rating===1200 && cur.verdict==='OK')a1200++; 
+else if(cur.problem.rating===1300 && cur.verdict==='OK')a1300++; 
+else if(cur.problem.rating===1400 && cur.verdict==='OK')a1400++; 
+else if(cur.problem.rating===1500 && cur.verdict==='OK')a1500++; 
+else if(cur.problem.rating===1600 && cur.verdict==='OK')a1600++; 
+else if(cur.problem.rating===1700 && cur.verdict==='OK')a1700++; 
+
+})
+// console.log(a,b,c,d,e);
+// console.log(a+b+c+d+e)
+
+const chart = new QuickChart();
+chart.setConfig({
+  type: 'bar',
+  data: { labels: ['1700','1600','1500' , '1400','1300','1200', '1100','1000','900','800'], datasets: [{ label: 'Problems Solved', data: [a1700,a1600,a1500,a1400,a1300,a1200,a1100,a1000,a900,a800] }] },
+});
+const url = await chart.getShortUrl();
+message.channel.send(`Here's the chart you requested: ${url}`);
+
+});
+
+
+
+
+
+
 client.on('messageCreate',async message=>{
 if(message.author.bot) return;
 // console.log(message);
@@ -298,7 +351,7 @@ console.log(a+b+c+d+e)
 const chart = new QuickChart();
 chart.setConfig({
   type: 'bar',
-  data: { labels: ['E', 'D','C','B','A'], datasets: [{ label: 'Foo', data: [e,d,c,b,a] }] },
+  data: { labels: ['E', 'D','C','B','A'], datasets: [{ label: 'Problems Solved', data: [e,d,c,b,a] }] },
 });
 const url = await chart.getShortUrl();
 message.channel.send(`Here's the chart you requested: ${url}`);
@@ -312,5 +365,5 @@ message.channel.send(`Here's the chart you requested: ${url}`);
 
 
 
-// keepAlive();
+keepAlive();
 client.login(token);
