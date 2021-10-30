@@ -362,6 +362,69 @@ message.channel.send(`Here's the chart you requested: ${url}`);
 
 
 
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(!message.content.startsWith('userInfo')) return;
+
+const handle=message.content.split(' ')[1];
+const rANK_COLOR = {
+    newbie: [128, 128, 128],
+    pupil: [35, 145, 35],
+    specialist: [37, 180, 171],
+    expert: [0, 0, 255],
+    candidate_master: [170, 0, 170],
+    master: [255, 140, 0],
+    international_master: [255, 140, 0],
+    grandmaster: [255, 0, 0],
+    international_grandmaster: [255, 0, 0],
+    legendary_grandmaster: [255, 0, 0],
+    headquarters: [0, 0, 0],
+};
+console.log(rANK_COLOR.newbie);
+
+const priyanshuData=await fetch(`https://codeforces.com/api/user.info?handles=${handle}`).then(response => response.json());
+const priyanshuInfo=priyanshuData.result[0];
+// console.log(priyanshuInfo)
+const temp=priyanshuInfo.rank;
+console.log(temp); 
+const color=rANK_COLOR[temp];
+console.log(color)
+
+function ColorToHex(color) {
+  var hexadecimal = color.toString(16);
+  return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+}
+
+function ConvertRGBtoHex(red, green, blue) {
+  return "0x"+ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
+}
+console.log(ConvertRGBtoHex(255, 100, 200));
+const colorCode=ConvertRGBtoHex(color[0], color[1], color[2]);
+
+
+const embed = new Discord.MessageEmbed().setColor(colorCode).setTitle(`${priyanshuInfo.firstName} ${priyanshuInfo.lastName}`)
+embed
+.setAuthor(`${priyanshuInfo.handle}`, `${priyanshuInfo.titlePhoto}`, `https://codeforces.com/profile/${priyanshuInfo.handle}`)
+// .setImage(`${priyanshuInfo.titlePhoto}`)
+// .addField("Name", `${priyanshuInfo.firstName} ${priyanshuInfo.lastName}`,false)
+.addField("Rating", `${priyanshuInfo.rating}`,false)
+.addField("Rank", `${priyanshuInfo.rank}`,false)
+.addField("Country", `${priyanshuInfo.country}`,false)
+.addField("City", `${priyanshuInfo.city}`,true)
+
+
+message.channel.send({ embeds: [embed] });
+
+
+});
+
+
+
+
+
+
 
 
 
