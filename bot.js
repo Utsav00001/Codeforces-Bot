@@ -85,6 +85,7 @@ client.on('ready', () => {
 });
 
 
+
 client.on('messageCreate',async message=>{
 if(message.author.bot) return;
 // console.log(message);
@@ -420,6 +421,42 @@ message.channel.send({ embeds: [embed] });
 
 });
 
+
+
+
+
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(message.content!='upcomingContests') return;
+
+
+const contests=await fetch('https://codeforces.com/api/contest.list?gym=false').then(res=>res.json()) 
+const contestData=contests.result;
+var ans=[];
+var f=0;
+contestData.forEach(cur=>{
+  if(cur.relativeTimeSeconds<0){
+ans.push({"name":cur.name,"time":cur.relativeTimeSeconds});
+  } 
+  else return;
+})
+console.log(ans);
+
+const embed = new Discord.MessageEmbed().setColor(0x3498DB).setTitle('Upcoming Contests');
+
+ans.forEach(cur=>{
+var d = new Date(Date.now() +Math.abs(cur.time)*1000);
+var ti=d.toString().slice(0,24);
+embed.addField(`${cur.name}`,`${ti}`,false)
+
+})
+
+
+message.channel.send({ embeds: [embed] });
+
+});
 
 
 
