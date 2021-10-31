@@ -293,6 +293,9 @@ var a1400=0;
 var a1500=0;
 var a1600=0;
 var a1700=0;
+var a1800=0;
+var a1900=0;
+var a2000=0;
 priyanshuQuestions.forEach(cur=>{
 if(cur.problem.rating===800 && cur.verdict==='OK') a800++;
 else if(cur.problem.rating===900 && cur.verdict==='OK') a900++;
@@ -304,6 +307,9 @@ else if(cur.problem.rating===1400 && cur.verdict==='OK')a1400++;
 else if(cur.problem.rating===1500 && cur.verdict==='OK')a1500++; 
 else if(cur.problem.rating===1600 && cur.verdict==='OK')a1600++; 
 else if(cur.problem.rating===1700 && cur.verdict==='OK')a1700++; 
+else if(cur.problem.rating===1800 && cur.verdict==='OK')a1800++;
+else if(cur.problem.rating===1900 && cur.verdict==='OK')a1900++;
+else if(cur.problem.rating===2000 && cur.verdict==='OK') a2000++;
 
 })
 // console.log(a,b,c,d,e);
@@ -312,7 +318,7 @@ else if(cur.problem.rating===1700 && cur.verdict==='OK')a1700++;
 const chart = new QuickChart();
 chart.setConfig({
   type: 'bar',
-  data: { labels: ['1700','1600','1500' , '1400','1300','1200', '1100','1000','900','800'], datasets: [{ label: 'Problems Solved', data: [a1700,a1600,a1500,a1400,a1300,a1200,a1100,a1000,a900,a800] }] },
+  data: { labels: ['2000' , '1900' ,'1800','1700','1600','1500' , '1400','1300','1200', '1100','1000','900','800'], datasets: [{ label: 'Problems Solved', data: [a2000,a1900,a1800,a1700,a1600,a1500,a1400,a1300,a1200,a1100,a1000,a900,a800] }] },
 });
 const url = await chart.getShortUrl();
 message.channel.send(`Here's the chart you requested: ${url}`);
@@ -417,7 +423,7 @@ embed
 
 
 
-const priyanshuq=await fetch('https://codeforces.com/api/user.status?handle=priyanshu619').then(response => response.json());
+const priyanshuq=await fetch(`https://codeforces.com/api/user.status?handle=${handle}`).then(response => response.json());
 const priyanshuQuestions=priyanshuq.result;
 var a=0;
 var b=0;
@@ -469,9 +475,11 @@ ans.push({"name":cur.name,"time":cur.relativeTimeSeconds});
   } 
   else return;
 })
-console.log(ans);
+// console.log(ans);
+ans.reverse();
 
 const embed = new Discord.MessageEmbed().setColor(0x3498DB).setTitle('Upcoming Contests');
+embed.setThumbnail('https://codeforces.org/s/29643/images/codeforces-logo-with-telegram.png')
 
 ans.forEach(cur=>{
 var d = new Date(Date.now() +Math.abs(cur.time)*1000);
