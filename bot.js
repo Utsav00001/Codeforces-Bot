@@ -416,7 +416,34 @@ embed
 .addField("City", `${priyanshuInfo.city}`,true)
 
 
+
+const priyanshuq=await fetch('https://codeforces.com/api/user.status?handle=priyanshu619').then(response => response.json());
+const priyanshuQuestions=priyanshuq.result;
+var a=0;
+var b=0;
+var c=0;
+var d=0;
+var e=0;
+priyanshuQuestions.forEach(cur=>{
+if(cur.problem.index==='A' && cur.verdict==='OK') a++;
+else if(cur.problem.index==='B' && cur.verdict==='OK') b++;
+else if(cur.problem.index==='C' && cur.verdict==='OK') c++;
+else if(cur.problem.index==='D' && cur.verdict==='OK') d++;
+else if(cur.problem.index==='E' && cur.verdict==='OK')e++; 
+})
+console.log(a,b,c,d,e);
+console.log(a+b+c+d+e)
+
+const chart = new QuickChart();
+chart.setConfig({
+  type: 'bar',
+  data: { labels: ['E', 'D','C','B','A'], datasets: [{ label: 'Problems Solved', data: [e,d,c,b,a] }] },
+});
+const url = await chart.getShortUrl();
+
+
 message.channel.send({ embeds: [embed] });
+message.channel.send(`${url}`);
 
 
 });
