@@ -496,6 +496,53 @@ message.channel.send({ embeds: [embed] });
 
 
 
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(message.content!='runningContests') return;
+
+
+const contests=await fetch('https://codeforces.com/api/contest.list?gym=false').then(res=>res.json()) 
+const contestData=contests.result;
+var ans=[];
+var f=0;
+contestData.forEach(cur=>{
+  if(cur.relativeTimeSeconds>0){
+  if((cur.durationSeconds-cur.relativeTimeSeconds)>0){
+ans.push({"name":cur.name,"time":cur.startTimeSeconds});
+f=1;
+  } 
+  }
+  else return;
+})
+// console.log(ans);
+// ans.reverse();
+
+const embed = new Discord.MessageEmbed().setColor(0x3498DB).setTitle('Running Contests');
+embed.setThumbnail('https://codeforces.org/s/29643/images/codeforces-logo-with-telegram.png')
+if(f===1){
+  console.log("1")
+ans.forEach(cur=>{
+var d = new Date(cur.startTimeSeconds*1000);
+var ti=d.toString().slice(0,24);
+embed.addField(`${cur.name}`,`${ti}`,false)
+
+})
+}
+else{ console.log("0");
+embed.addField('NO Contest is Running','_',false)
+}
+
+
+
+message.channel.send({ embeds: [embed] });
+
+});
+
+
+
+
 
 
 
