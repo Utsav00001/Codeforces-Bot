@@ -529,6 +529,31 @@ message.channel.send({ embeds: [embed] });
 
 
 
+client.on('messageCreate',async message=>{
+if(message.author.bot) return;
+// console.log(message);
+
+if(!message.content.startsWith('recommend')) return;
+const tag=message.content.split('-')[1];
+
+const problemsData=await fetch(`https://codeforces.com/api/problemset.problems?tags=${tag}`).then(res=>res.json()) 
+const problems=problemsData.result.problems;
+// const len=problems.lenght;
+const len=20;
+const random=Math.floor(Math.random() * len);
+const res=tag.toUpperCase();
+const embed = new Discord.MessageEmbed().setColor(0x3498DB).setTitle(`${res}- Problem`);
+embed.setThumbnail('https://codeforces.org/s/29643/images/codeforces-logo-with-telegram.png')
+embed.addField(`${problems[random].name}`,`[${problems[random].rating}](https://codeforces.com/contest/${problems[random].rating}/problem/${problems[random].index})`,false)
+
+
+message.channel.send({ embeds: [embed] });
+
+});
+
+
+
+
 
 
 
