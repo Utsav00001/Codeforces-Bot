@@ -8,17 +8,6 @@ const CLIENT_ID = process.env['client_id']
 const GUILD_ID = process.env['guild_id']
 // const fetch = require('node-fetch')
 
-// client.on('message', message => {
-//   if (message.content === "/avatar") {
-//     const embed = new RichEmbed()
-//     .setTitle('Avatar!')
-//     .setAuthor("Your Avatar", message.author.avatarURL)
-//     .setImage(message.author.avatarURL)
-//     .setColor('RANDOM')
-//     .setDescription('Avatar URL')
-//    message.reply(embed)
-//   }
-// });
 
 const commands = [{
   name: 'cfbot',
