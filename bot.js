@@ -117,7 +117,6 @@ message.channel.send({ embeds: [embed] });
 
 
 
-
 client.on('messageCreate',async message=>{
 if(message.author.bot) return;
 // console.log(message);
@@ -200,20 +199,6 @@ embed.addField(`${handle}`, `[${priyanshuRank}](https://codeforces.com/profile/$
 
 setTimeout(function(){ message.channel.send({ embeds: [embed] }); }, 3000);
 });
-
-
-
-
-
-
-// client.on('messageCreate',async message=>{
-// if(message.author.bot) return;
-// // console.log(message);
-
-// if(!message.content.startsWith('cfContest')) return;
-// // number of contest given in last month
-// });
-
 
 
 
